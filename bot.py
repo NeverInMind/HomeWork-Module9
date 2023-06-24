@@ -1,24 +1,11 @@
+@@ -0,0 +1,90 @@
 MEMORY = {}
 
 
-def decorator_function(func):
-    def wrapper():
-        try:
-            func()
-        except KeyError:
-            print('Invalid command')
-        except IndexError:
-            print('Not enough arguments')
-
-    return wrapper
-
-
-@decorator_function
 def hello(val):
     return 'How can I help you?'
 
 
-@decorator_function
 def add(val):
     str_to_obj = val.split(' ')
     if str_to_obj[0] in MEMORY:
@@ -28,25 +15,21 @@ def add(val):
     return 'New contact added'
 
 
-@decorator_function
 def change(val):
     str_to_obj = val.split(' ')
     MEMORY[str_to_obj[0]] = str_to_obj[1]
     return 'Contact was change'
 
 
-@decorator_function
 def show_all(val):
     return MEMORY
 
 
-@decorator_function
 def show(val):
     str_to_obj = val.split(' ')
     return MEMORY[str_to_obj[0]]
 
 
-@decorator_function
 def close(val):
     return 'Good bye!'
 
@@ -71,10 +54,23 @@ COMMANDS_KEYWORDS = {'hello': ['hello',  'hi'],
 checker = True
 
 
+def decorator_function(func):
+    def wrapper():
+        try:
+            func()
+        except KeyError:
+            print('Invalid command')
+        except IndexError:
+            print('Not enough arguments')
+
+    return wrapper
+
+
 def handler(operator):
     return COMMANDS[operator]
 
 
+@decorator_function
 def main():
     global checker
     inp = input('Enter command: ')
