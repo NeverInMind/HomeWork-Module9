@@ -62,6 +62,8 @@ def decorator_function(func):
             print('Invalid command')
         except IndexError:
             print('Not enough arguments')
+        except UnboundLocalError:
+            print('Invalid command')
 
     return wrapper
 
