@@ -1,11 +1,28 @@
-
 MEMORY = {}
 
 
+def decorator_function(func):
+    def wrapper(val):
+        try:
+            test = func(val)
+            return test
+        except KeyError:
+            print('Invalid command')
+        except IndexError:
+            print('Not enough arguments')
+        except UnboundLocalError:
+            print('Invalid command')
+
+    return wrapper
+
+
+@decorator_function
 def hello(val):
-    return 'How can I help you?'
+    val = 'How can I help you?'
+    return val
 
 
+@decorator_function
 def add(val):
     str_to_obj = val.split(' ')
     if str_to_obj[0] in MEMORY:
@@ -15,21 +32,25 @@ def add(val):
     return 'New contact added'
 
 
+@decorator_function
 def change(val):
     str_to_obj = val.split(' ')
     MEMORY[str_to_obj[0]] = str_to_obj[1]
     return 'Contact was change'
 
 
-def show_all(val):
+@decorator_function
+def show_all(self):
     return MEMORY
 
 
+@decorator_function
 def show(val):
     str_to_obj = val.split(' ')
     return MEMORY[str_to_obj[0]]
 
 
+@decorator_function
 def close(val):
     return 'Good bye!'
 
@@ -51,43 +72,25 @@ COMMANDS_KEYWORDS = {'hello': ['hello',  'hi'],
                      'close': ['good bye', 'close', 'exit']
                      }
 
-checker = True
-
-
-def decorator_function(func):
-    def wrapper():
-        try:
-            func()
-        except KeyError:
-            print('Invalid command')
-        except IndexError:
-            print('Not enough arguments')
-        except UnboundLocalError:
-            print('Invalid command')
-
-    return wrapper
-
 
 def handler(operator):
     return COMMANDS[operator]
 
 
-@decorator_function
 def main():
-    global checker
-    inp = input('Enter command: ')
-    for command, kw in COMMANDS_KEYWORDS.items():
-        for w in kw:
-            if inp.startswith(w):
-                result = handler(command)
-                user_str = inp.replace(f'{w} ', '').strip()
-
-    res = result(user_str)
-    print(res)
-    if res == 'Good bye!':
-        checker = False
+    checker = True
+    while checker is True:
+        inp = input('Enter command: ')
+        for command, kw in COMMANDS_KEYWORDS.items():
+            for w in kw:
+                if inp.startswith(w):
+                    result = handler(command)
+                    user_str = inp.replace(f'{w} ', '').strip()
+        res = result(user_str)
+        print(res)
+        if res == 'Good bye!':
+            checker = False
 
 
 if __name__ == '__main__':
-    while checker is True:
-        main()
+    main()
